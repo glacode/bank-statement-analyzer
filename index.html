@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recurring Costs Calculator - Bank Statement</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --primary: #2563eb;
+      --border: #e2e8f0;
+      --danger: #ef4444;
+      --success: #10b981;
+      --warning: #f59e0b;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    p.subtitle { color: var(--text-muted); margin-top: 0; margin-bottom: 1.5rem; }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .grid { grid-template-columns: 2fr 1fr; }
+    }
+
+    label { display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; }
+
+    textarea {
+      width: 100%;
+      height: 180px;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.25rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    button:hover { opacity: 0.9; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    .stat-card .title { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+    .stat-card .value { font-size: 1.5rem; font-weight: 700; margin-top: 0.25rem; }
+
+    .text-danger { color: var(--danger); }
+    .text-success { color: var(--success); }
+    .text-warning { color: var(--warning); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th, td { text-align: left; padding: 0.6rem; border-bottom: 1px solid var(--border); }
+    th { background-color: #f1f5f9; font-weight: 600; }
+
+    tr.excluded { opacity: 0.4; background-color: #f8fafc; }
+    tr.atm { background-color: #fffbeb; }
+
+    .badge {
+      display: inline-block;
+      padding: 0.2em 0.5em;
+      font-size: 0.75rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .badge-included { background: #d1fae5; color: #065f46; }
+    .badge-excluded { background: #fee2e2; color: #991b1b; }
+    .badge-positive { background: #e0f2fe; color: #075985; }
+    .badge-atm { background: #fef3c7; color: #92400e; }
+  </style>
+</head>
+<body>
+
+  <h1>Recurring Costs Calculator</h1>
+  <p class="subtitle">Paste your bank statement rows and define the threshold for structural costs.</p>
+
+  <div class="card">
+    <div class="grid">
+      <div>
+        <label for="rawText">Bank Statement Data (paste here):</label>
+        <textarea id="rawText" placeholder="Paste your bank statement rows here..."></textarea>
+      </div>
+      <div>
+        <label for="threshold">Cost Threshold (€):</label>
+        <input type="number" id="threshold" value="200" step="10" min="0">
+        <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">
+          Negative costs above this threshold (e.g., -250€ with threshold 200€) will be ignored as non-recurring.
+        </small>
+        
+        <button onclick="processData()">Analyze & Calculate</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats" id="statsContainer" style="display: none;">
+    <div class="stat-card">
+      <div class="title">Total Recurring Costs</div>
+      <div class="value text-danger" id="totalRecurring">€ 0.00</div>
+    </div>
+    <div class="stat-card">
+      <div class="title">Recurring Transactions</div>
+      <div class="value" id="countRecurring">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="title">Excluded / Above Threshold</div>
+      <div class="value" id="totalIgnored">€ 0.00</div>
+    </div>
+    <div class="stat-card" style="border-color: var(--warning);">
+      <div class="title">ATM Withdrawals</div>
+      <div class="value text-warning" id="totalAtm">€ 0.00</div>
+    </div>
+    <div class="stat-card" style="border-color: var(--success);">
+      <div class="title">Recurring Costs (excl. ATM)</div>
+      <div class="value text-danger" id="totalRecurringExcludingAtm">€ 0.00</div>
+    </div>
+  </div>
+
+  <div class="card" id="tableContainer" style="display: none;">
+    <h3>Transaction Details</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Entry Date</th>
+          <th>Value Date</th>
+          <th>Reason</th>
+          <th>Description</th>
+          <th style="text-align: right;">Amount (€)</th>
+          <th style="text-align: center;">Status</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <script>
+    /**
+     * Parses an amount string in Italian format (e.g., -1.111,11)
+     * @param {string} str - The amount string to parse
+     * @returns {number} The parsed number
+     */
+    function parseAmount(str) {
+      if (!str) return 0;
+      
+      // Remove spaces, euro symbols, and invisible characters
+      let clean = str.replace(/[€\s\xa0]/g, '').trim();
+      
+      // Remove thousands separators (dots)
+      clean = clean.replace(/\./g, '');
+      
+      // Replace decimal comma with dot
+      clean = clean.replace(',', '.');
+      
+      const num = parseFloat(clean);
+      return isNaN(num) ? 0 : num;
+    }
+
+    /**
+     * Formats a number as currency in Euro (Italian locale)
+     * @param {number} num - The number to format
+     * @returns {string} Formatted currency string
+     */
+    function formatCurrency(num) {
+      return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(num);
+    }
+
+    /**
+     * Checks if a transaction is an ATM withdrawal
+     * @param {string} description - The transaction description
+     * @param {number} amount - The transaction amount
+     * @returns {boolean} True if it's an ATM withdrawal
+     */
+    function isAtmTransaction(description, amount) {
+      // Check if description contains 'prelievo' (case insensitive)
+      const hasPrelievo = description.toLowerCase().includes('prelievo');
+      
+      // Check if amount is negative and a multiple of 50
+      const isMultipleOf50 = amount < 0 && Math.abs(amount) % 50 === 0;
+      
+      return hasPrelievo && isMultipleOf50;
+    }
+
+    /**
+     * Main function to process the bank statement data
+     */
+    function processData() {
+      const rawText = document.getElementById('rawText').value.trim();
+      const thresholdVal = Math.abs(parseFloat(document.getElementById('threshold').value) || 0);
+
+      if (!rawText) {
+        alert('Please paste some text in the text area before continuing.');
+        return;
+      }
+
+      const lines = rawText.split('\n');
+      let totalRecurringSum = 0;
+      let totalIgnoredSum = 0;
+      let countRecurring = 0;
+      let totalAtmSum = 0;
+      let countAtm = 0;
+
+      const tableBody = document.getElementById('tableBody');
+      tableBody.innerHTML = '';
+
+      lines.forEach(line => {
+        if (!line.trim()) return;
+
+        // Split by tab or multiple spaces
+        let columns = line.split('\t');
+        if (columns.length < 5) {
+          columns = line.split(/\s{2,}/);
+        }
+
+        // Skip header row
+        if (columns[0] && columns[0].toUpperCase().includes('DATA CONT')) return;
+
+        // Extract columns
+        const entryDate = columns[0] ? columns[0].trim() : '-';
+        const valueDate = columns[1] ? columns[1].trim() : '-';
+        const reason = columns[2] ? columns[2].trim() : '-';
+        
+        let description = '-';
+        let amountRaw = '';
+
+        // Look for amount - search from the end of the row
+        for (let i = columns.length - 1; i >= 0; i--) {
+          const candidate = columns[i].trim();
+          // Look for a pattern that resembles a number (with dots, commas, sign)
+          if (/^-?[\d,.]+$/.test(candidate)) {
+            amountRaw = candidate;
+            // If we found the amount, take everything before it as description
+            if (i > 3) {
+              description = columns.slice(3, i).join(' ').trim();
+            } else if (i === 3) {
+              description = columns[3].trim();
+            }
+            break;
+          }
+        }
+
+        // If no amount found, try the last column
+        if (!amountRaw) {
+          amountRaw = columns[columns.length - 1].trim();
+          description = columns.length > 3 ? columns[3].trim() : '-';
+        }
+
+        const amount = parseAmount(amountRaw);
+
+        let status = 'positive';
+        let isExcluded = false;
+        let isAtm = false;
+
+        if (amount < 0) {
+          const absCost = Math.abs(amount);
+          if (absCost <= thresholdVal) {
+            status = 'included';
+            totalRecurringSum += amount;
+            countRecurring++;
+            
+            // Check if it's an ATM withdrawal
+            if (isAtmTransaction(description, amount)) {
+              isAtm = true;
+              totalAtmSum += amount;
+              countAtm++;
+            }
+          } else {
+            status = 'excluded';
+            totalIgnoredSum += amount;
+            isExcluded = true;
+          }
+        } else {
+          isExcluded = true;
+        }
+
+        const row = document.createElement('tr');
+        if (isExcluded) row.classList.add('excluded');
+        if (isAtm && !isExcluded) row.classList.add('atm');
+
+        let badgeHtml = '';
+        if (isAtm && !isExcluded) {
+          badgeHtml = '<span class="badge badge-atm">ATM Withdrawal</span>';
+        } else if (status === 'included') {
+          badgeHtml = '<span class="badge badge-included">Recurring</span>';
+        } else if (status === 'excluded') {
+          badgeHtml = '<span class="badge badge-excluded">Above Threshold</span>';
+        } else {
+          badgeHtml = '<span class="badge badge-positive">Income</span>';
+        }
+
+        row.innerHTML = `
+          <td>${entryDate}</td>
+          <td>${valueDate}</td>
+          <td>${reason}</td>
+          <td>${description}</td>
+          <td style="text-align: right; font-weight: 600; color: ${amount < 0 ? 'var(--danger)' : 'var(--success)'}">
+            ${formatCurrency(amount)}
+          </td>
+          <td style="text-align: center;">${badgeHtml}</td>
+        `;
+
+        tableBody.appendChild(row);
+      });
+
+      // Calculate recurring costs excluding ATM withdrawals
+      const totalRecurringExcludingAtm = totalRecurringSum - totalAtmSum;
+
+      // Update stats cards
+      document.getElementById('totalRecurring').textContent = formatCurrency(totalRecurringSum);
+      document.getElementById('countRecurring').textContent = countRecurring;
+      document.getElementById('totalIgnored').textContent = formatCurrency(totalIgnoredSum);
+      document.getElementById('totalAtm').textContent = formatCurrency(totalAtmSum);
+      document.getElementById('totalRecurringExcludingAtm').textContent = formatCurrency(totalRecurringExcludingAtm);
+
+      // Show the results
+      document.getElementById('statsContainer').style.display = 'grid';
+      document.getElementById('tableContainer').style.display = 'block';
+
+      // Update ATM card title with count
+      if (countAtm > 0) {
+        const atmCard = document.querySelector('.stat-card:nth-child(4) .title');
+        atmCard.textContent = `ATM Withdrawals (${countAtm})`;
+      }
+    }
+  </script>
+</body>
+</html>
