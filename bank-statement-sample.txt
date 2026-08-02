@@ -1,0 +1,50 @@
+02/01/2024	02/01/2024	Credit	Monthly Salary	+3.250,00
+07/01/2024	07/01/2024	Credit	Freelance Payment	+450,00
+12/01/2024	12/01/2024	Debit	POS Payment - Supermarket	-87,45
+15/01/2024	15/01/2024	Debit	ATM Withdrawal - Prelievo contanti	-200,00
+18/01/2024	18/01/2024	Debit	Direct Debit - Netflix Subscription	-15,99
+20/01/2024	20/01/2024	Debit	Direct Debit - Spotify Premium	-12,99
+22/01/2024	22/01/2024	Debit	POS Payment - Restaurant	-45,30
+25/01/2024	25/01/2024	Credit	Dividend Payment	+125,50
+28/01/2024	28/01/2024	Debit	Direct Debit - Electricity Bill	-89,50
+30/01/2024	30/01/2024	Credit	Tax Refund	+680,00
+03/02/2024	03/02/2024	Debit	ATM Withdrawal - Prelievo bancomat	-150,00
+05/02/2024	05/02/2024	Debit	POS Payment - Pharmacy	-23,80
+08/02/2024	08/02/2024	Credit	Rental Income	+1.200,00
+10/02/2024	10/02/2024	Debit	Direct Debit - Internet Service	-39,99
+12/02/2024	12/02/2024	Debit	POS Payment - Clothing Store	-134,20
+15/02/2024	15/02/2024	Debit	ATM Withdrawal - Prelievo contante	-100,00
+18/02/2024	18/02/2024	Debit	Direct Debit - Water Bill	-35,60
+20/02/2024	20/02/2024	Credit	Investment Return	+230,75
+22/02/2024	22/02/2024	Debit	POS Payment - Gas Station	-62,15
+25/02/2024	25/02/2024	Debit	Direct Debit - Car Insurance	-245,00
+28/02/2024	28/02/2024	Debit	ATM Withdrawal - Prelievo bancomat	-300,00
+03/03/2024	03/03/2024	Credit	Bonus Payment	+500,00
+05/03/2024	05/03/2024	Debit	POS Payment - Electronics Store	-199,99
+08/03/2024	08/03/2024	Debit	Direct Debit - Phone Bill	-42,50
+10/03/2024	10/03/2024	Debit	POS Payment - Bookstore	-38,75
+12/03/2024	12/03/2024	Debit	ATM Withdrawal - Prelievo contanti	-50,00
+15/03/2024	15/03/2024	Debit	Direct Debit - Gym Membership	-55,00
+18/03/2024	18/03/2024	Credit	Refund - Amazon	+89,99
+20/03/2024	20/03/2024	Debit	POS Payment - Home Depot	-167,80
+22/03/2024	22/03/2024	Debit	Direct Debit - Credit Card Payment	-410,25
+25/03/2024	25/03/2024	Credit	Side Business Income	+350,00
+28/03/2024	28/03/2024	Debit	ATM Withdrawal - Prelievo bancomat	-250,00
+02/04/2024	02/04/2024	Debit	POS Payment - Taxi Service	-28,50
+05/04/2024	05/04/2024	Debit	Direct Debit - Mortgage Payment	-1.250,00
+08/04/2024	08/04/2024	Credit	Cash Deposit	+1.500,00
+10/04/2024	10/04/2024	Debit	ATM Withdrawal - Prelievo contante	-200,00
+12/04/2024	12/04/2024	Debit	POS Payment - Restaurant	-56,80
+15/04/2024	15/04/2024	Debit	Direct Debit - Health Insurance	-92,30
+20/04/2024	20/04/2024	Debit	Wire Transfer - Car Purchase	-2.500,00
+05/05/2024	05/05/2024	Debit	Direct Debit - Annual Insurance Premium	-800,00
+10/06/2024	10/06/2024	Debit	Wire Transfer - Home Renovation	-3.200,00
+15/07/2024	15/07/2024	Credit	Annual Bonus	+2.500,00
+20/08/2024	20/08/2024	Debit	POS Payment - Vacation	-1.750,00
+05/09/2024	05/09/2024	Debit	Direct Debit - Property Tax	-2.100,00
+15/10/2024	15/10/2024	Credit	Investment Dividend	+850,00
+20/11/2024	20/11/2024	Debit	ATM Withdrawal - Prelievo bancomat	-150,00
+25/11/2024	25/11/2024	Debit	POS Payment - Black Friday	-320,00
+05/12/2024	05/12/2024	Credit	Year-end Bonus	+1.800,00
+15/12/2024	15/12/2024	Debit	ATM Withdrawal - Prelievo contanti	-100,00
+20/12/2024	20/12/2024	Debit	POS Payment - Christmas Shopping	-450,00
