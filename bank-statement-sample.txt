@@ -1,9 +1,10 @@
 02/01/2024	02/01/2024	Credit	Monthly Salary	+3.250,00
-07/01/2024	07/01/2024	Credit	Freelance Payment	+450,00
 12/01/2024	12/01/2024	Debit	POS Payment - Supermarket	-87,45
 15/01/2024	15/01/2024	Debit	ATM Withdrawal - Prelievo contanti	-200,00
 18/01/2024	18/01/2024	Debit	Direct Debit - Netflix Subscription	-15,99
+19/01/2024	19/01/2024	Debit	Wire Transfer - Home Renovation	-3.200,00
 20/01/2024	20/01/2024	Debit	Direct Debit - Spotify Premium	-12,99
+21/01/2024	21/01/2024	Credit	Freelance Payment	+450,00
 22/01/2024	22/01/2024	Debit	POS Payment - Restaurant	-45,30
 25/01/2024	25/01/2024	Credit	Dividend Payment	+125,50
 28/01/2024	28/01/2024	Debit	Direct Debit - Electricity Bill	-89,50
@@ -38,7 +39,6 @@
 15/04/2024	15/04/2024	Debit	Direct Debit - Health Insurance	-92,30
 20/04/2024	20/04/2024	Debit	Wire Transfer - Car Purchase	-2.500,00
 05/05/2024	05/05/2024	Debit	Direct Debit - Annual Insurance Premium	-800,00
-10/06/2024	10/06/2024	Debit	Wire Transfer - Home Renovation	-3.200,00
 15/07/2024	15/07/2024	Credit	Annual Bonus	+2.500,00
 20/08/2024	20/08/2024	Debit	POS Payment - Vacation	-1.750,00
 05/09/2024	05/09/2024	Debit	Direct Debit - Property Tax	-2.100,00
@@ -46,5 +46,5 @@
 20/11/2024	20/11/2024	Debit	ATM Withdrawal - Prelievo bancomat	-150,00
 25/11/2024	25/11/2024	Debit	POS Payment - Black Friday	-320,00
 05/12/2024	05/12/2024	Credit	Year-end Bonus	+1.800,00
-15/12/2024	15/12/2024	Debit	ATM Withdrawal - Prelievo contanti	-100,00
+15/12/2024	15/12/2024	Debit	ATM Withdrawal - Prelievo contanti	-400,00
 20/12/2024	20/12/2024	Debit	POS Payment - Christmas Shopping	-450,00
