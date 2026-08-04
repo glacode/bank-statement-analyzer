@@ -202,11 +202,14 @@
       // Remove spaces, euro symbols, and invisible characters
       let clean = str.replace(/[€\s\xa0]/g, '').trim();
       
-      // Remove thousands separators (dots)
+      // Remove thousands separators (dots in Italian format)
       clean = clean.replace(/\./g, '');
       
-      // Replace decimal comma with dot
-      clean = clean.replace(',', '.');
+      // Replace the LAST comma with dot (for decimal separator in Italian format)
+      const lastCommaIndex = clean.lastIndexOf(',');
+      if (lastCommaIndex !== -1) {
+        clean = clean.substring(0, lastCommaIndex) + '.' + clean.substring(lastCommaIndex + 1);
+      }
       
       const num = parseFloat(clean);
       return isNaN(num) ? 0 : num;
@@ -218,7 +221,18 @@
      * @returns {string} Formatted currency string
      */
     function formatCurrency(num) {
-      return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(num);
+      const formatted = new Intl.NumberFormat('it-IT', {
+        style: 'decimal',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+        useGrouping: true
+      }).format(num);
+      
+      // Add Euro symbol
+      if (num < 0) {
+        return '- € ' + formatted.substring(1);
+      }
+      return '€ ' + formatted;
     }
 
     /**
